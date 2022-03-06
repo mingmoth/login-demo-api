@@ -3,5 +3,8 @@ const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 
+const userController = require('../controllers/userController')
+
+router.post('/signin', userController.signIn)
 
 module.exports = router
