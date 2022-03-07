@@ -37,10 +37,10 @@ const userController = {
     try {
       let payload = { id: req.user.id }
       let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
-      return res.redirect(`http://localhost:8080/#/_=_?FacebookId=${req.user.id}&token=${token}`)
+      return res.redirect(`https://mingmoth.github.io/login-demo/#/_=_?FacebookId=${req.user.id}&token=${token}`)
     } catch (error) {
       console.log(error)
-      return res.redirect('http://localhost:8080/#/signin')
+      return res.redirect('https://mingmoth.github.io/login-demo/#/signin')
     }
 
   },
