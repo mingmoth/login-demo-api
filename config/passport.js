@@ -23,7 +23,7 @@ passport.use(new JWTStrategy(jwtOptions, function (jwt_payload, next) {
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+  callbackURL: process.env.FACEBOOK_APP_CALLBACK || "http://localhost:3000/api/auth/facebook/callback",
   profileFields: ['id', 'displayName', 'email', 'photos', 'gender']
 },
   function (accessToken, refreshToken, profile, cb) {
