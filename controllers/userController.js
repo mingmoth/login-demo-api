@@ -5,13 +5,15 @@ const { User } = require('../models')
 const userController = {
   signIn: async (req, res) => {
     const { email, password } = req.body
+    console.log('email:', email)
     if (!email || !password) {
       return res.json({ status: 'error', message: '請輸入帳號及密碼登入' })
     }
     try {
       const user = await User.findOne({ where: { email: req.body.email } })
-      if (!user) return res.status(401).json({ status: 'error', message: '找不到此使用者帳號' })
-      if (!bcrypt.compareSync(req.body.password, user.password)) return res.status(401).json({ status: 'error', message: '密碼輸入不正確' })
+      if (!user) return res.json({ status: 'error', message: '找不到此使用者帳號' })
+      console.log('user.email', user.email)
+      if (!bcrypt.compareSync(req.body.password, user.password)) return res.json({ status: 'error', message: '密碼輸入不正確' })
 
       // 簽發token
       let payload = { id: user.id }
