@@ -5,14 +5,12 @@ const { User } = require('../models')
 const userController = {
   signIn: async (req, res) => {
     const { email, password } = req.body
-    console.log('email:', email)
     if (!email || !password) {
       return res.json({ status: 'error', message: '請輸入帳號及密碼登入' })
     }
     try {
       const user = await User.findOne({ where: { email: req.body.email } })
       if (!user) return res.json({ status: 'error', message: '找不到此使用者帳號' })
-      console.log('user.email', user.email)
       if (!bcrypt.compareSync(req.body.password, user.password)) return res.json({ status: 'error', message: '密碼輸入不正確' })
 
       // 簽發token
@@ -32,6 +30,17 @@ const userController = {
     } catch (error) {
       console.log(error)
       return res.json({ status: 'error', message: '無法登入，請稍後再試' })
+    }
+
+  },
+  loginByFacebook: async (req, res) => {
+    try {
+      let payload = { id: req.user.id }
+      let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
+      return res.redirect(`http://localhost:8080/#/_=_?FacebookId=${req.user.id}&token=${token}`)
+    } catch (error) {
+      console.log(error)
+      return res.redirect('http://localhost:8080/#/signin')
     }
 
   },

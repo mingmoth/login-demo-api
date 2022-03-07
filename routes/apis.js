@@ -7,8 +7,15 @@ const userController = require('../controllers/userController')
 
 const authenticated = passport.authenticate('jwt', {session: false})
 
+// normal login
 router.post('/signin', userController.signIn)
 
+// login by facebook
+router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] } ))
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), userController.loginByFacebook)
+
+// getCurrentUser profile
 router.get('/currentuser', authenticated, userController.getCurrentUser)
 
 module.exports = router
