@@ -12,7 +12,7 @@ const userController = {
       const user = await User.findOne({ where: { email: req.body.email } })
       if (!user) return res.status(401).json({ status: 'error', message: '找不到此使用者帳號' })
       if (!bcrypt.compareSync(req.body.password, user.password)) return res.status(401).json({ status: 'error', message: '密碼輸入不正確' })
-      
+
       // 簽發token
       let payload = { id: user.id }
       let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
@@ -29,9 +29,29 @@ const userController = {
       })
     } catch (error) {
       console.log(error)
-      return res.json({ status: 'error', message: '無法登入，請稍後再試' })  
+      return res.json({ status: 'error', message: '無法登入，請稍後再試' })
     }
-    
+
+  },
+  getCurrentUser: async (req, res) => {
+    try {
+      const user = await User.findByPk(req.user.id)
+      if (!user) return res.status(401).json({ status: 'error', message: '找不到此使用者帳號' })
+      return res.status(200).json({
+        status: 'success',
+        message: '成功取得取用者資料',
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar
+        },
+      })
+    } catch (error) {
+      console.log(error)
+      return res.json({ status: 'error', message: '無法取得取用者資料' })
+    }
+
   },
 }
 
