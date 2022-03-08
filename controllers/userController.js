@@ -37,12 +37,25 @@ const userController = {
     try {
       let payload = { id: req.user.id }
       let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
-      return res.redirect(`https://mingmoth.github.io/login-demo/#/_=_?FacebookId=${req.user.id}&token=${token}`)
+      return res.redirect(`${process.env.CLIENT_URL
+        }/#/_=_?FacebookId=${req.user.id}&token=${token}` || `http://localhost:8080/#/_=_?FacebookId=${req.user.id}&token=${token}`)
     } catch (error) {
       console.log(error)
-      return res.redirect('https://mingmoth.github.io/login-demo/#/signin')
+      return res.redirect(`${process.env.CLIENT_URL
+        }/#/signin` || 'http://localhost:8080/#/signin')
     }
-
+  },
+  loginByGoogle: (req, res) => {
+    try {
+      let payload = { id: req.user.id }
+      let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
+      return res.redirect(`${process.env.CLIENT_URL
+        }/#/_=_?FacebookId=${req.user.id}&token=${token}` || `http://localhost:8080/#/_=_?GoogleId=${req.user.id}&token=${token}`)
+    } catch (error) {
+      console.log(error)
+      return res.redirect(`${process.env.CLIENT_URL
+        }/#/signin` || 'http://localhost:8080/#/signin')
+    }
   },
   getCurrentUser: async (req, res) => {
     try {

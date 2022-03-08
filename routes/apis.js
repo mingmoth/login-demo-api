@@ -15,6 +15,11 @@ router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['public
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), userController.loginByFacebook)
 
+// login by Google
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email']}))
+
+router.get('/auth/google/callback', passport.authenticate('google', { session: false }), userController.loginByGoogle)
+
 // getCurrentUser profile
 router.get('/currentuser', authenticated, userController.getCurrentUser)
 
